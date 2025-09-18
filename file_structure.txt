@@ -1,0 +1,7 @@
+/agri_chatbot_project/
+|
+|-- 📄 main.py               # Your main Streamlit application code
+|-- 📄 utils.py               # Helper functions for API calls (Weather, LLM, etc.)
+|-- 📄 style.css               # For custom styling of chat bubbles
+|-- 📄 requirements.txt      # List of all Python packages needed
+|-- 📄 .env                    # To store your secret API keys securely
