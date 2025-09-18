@@ -1,5 +1,7 @@
 # in app.py
+import re
 import chainlit as cl
+import google.generativeai as genai
 from utils import get_weather, get_llm_response # Import functions from your utils file
 
 @cl.on_chat_start
@@ -22,8 +24,18 @@ async def main(message: cl.Message):
     msg = cl.Message(content="")
     await msg.send()
     
-    # Get the latest weather data
-    weather_data = get_weather("Surat")
+    # Try to extract a location mentioned by the user (e.g., "in/at/for/near Rajasthan")
+    user_text = message.content or ""
+    location = None
+    match = re.search(r"\b(?:in|at|for|near)\s+([A-Za-z\s-]{2,})\b", user_text, flags=re.IGNORECASE)
+    if match:
+        location = match.group(1).strip()
+    if not location:
+        # Fallback default location
+        location = "Surat"
+
+    # Get the latest weather data for the extracted or default location
+    weather_data = get_weather(location)
     
     # Get the LLM's response
     llm_response = get_llm_response(user_message=message.content, weather_data=weather_data)
